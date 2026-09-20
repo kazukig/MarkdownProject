@@ -142,14 +142,14 @@ sequenceDiagram
     ユーザー->>VSCode: ワークスペースを開く
     VSCode->>Ext: 拡張機能アクティベート
     Ext->>FS: 最上位ルートフォルダ名を検証
-    alt ルート名が「.aimd」で終わる場合
+    alt ルートフォルダ名の末尾が「.aimd」の場合（例: Document.aimd）
         Ext->>Ext: 「AIMDモード」を有効化
         Ext->>FS: 配下の命名・階層構造を走査
         Ext->>VSCode: AIMD Explorer (ツリー) をサイドバーに描画
         alt 命名規則・階層に崩れを検知
             Ext->>VSCode: 警告トースト表示 (Quick Fix案内)
         end
-        Ext->>VSCode: .aimd-meta/ を保護 (Read-Only・鍵アイコン付与)
+        Ext->>VSCode: .aimd-meta/ を保護 (手動編集はRead-Only・鍵アイコン付与 / 自動更新処理は許可)
     else ルート名が「.aimd」以外の場合
         Ext->>Ext: 「通常モード」を有効化
         Ext->>VSCode: 基本Markdown編集支援のみロード
@@ -188,7 +188,7 @@ sequenceDiagram
             Ext->>Editor: 共通画像パスリンクを挿入 (../99_Image/...)
         else 通常の章内固有画像
             Ext->>FS: 紐づく親の章の「99_Image/」に保存
-            Ext->>Editor: 相対パスリンクを挿入 (./99_Image/...)
+            Ext->>Editor: 相対パスリンクを挿入 (../.../99_Image/...)
         end
     end
 ```
