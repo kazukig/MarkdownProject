@@ -188,7 +188,7 @@ sequenceDiagram
             Ext->>Editor: 共通画像パスリンクを挿入 (../99_Image/...)
         else 通常の章内固有画像
             Ext->>FS: 紐づく親の章の「99_Image/」に保存
-            Ext->>Editor: 相対パスリンクを挿入 (./99_Image/...)
+            Ext->>Editor: 相対パスリンクを挿入 (<本文位置に応じた親章までの相対パス>/99_Image/...)
         end
     end
 ```
