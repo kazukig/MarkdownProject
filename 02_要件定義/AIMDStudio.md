@@ -227,10 +227,10 @@ sequenceDiagram
         Preview->>Git: ai/ブランチを自動作成してコミット
         Preview->>FS: 対象Markdownファイルを更新
         opt 章・節構成に変更が発生した場合
-            Ext->>ユーザー: 「manifest.yaml の更新が必要です」と通知
-            ユーザー->>Ext: 更新を承認
-            Ext->>FS: manifest.yaml を直列更新 (バックアップ保持)
-            Ext->>FS: ルート目次 (00_目次.md / 01_目次.md) を自動更新
+            Harness->>ユーザー: 「manifest.yaml の更新が必要です」と通知
+            ユーザー->>Harness: 更新を承認
+            Harness->>FS: manifest.yaml を直列更新 (バックアップ保持)
+            Harness->>FS: ルート目次 (00_目次.md / 01_目次.md) を自動更新
         end
     end
 ```
