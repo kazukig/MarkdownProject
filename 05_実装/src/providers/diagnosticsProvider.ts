@@ -14,7 +14,7 @@ export class DiagnosticsProvider {
       });
     }
 
-    const tocExists = nodes.some((node) => /^0[01]_目次\.md$/.test(node.name));
+    const tocExists = flattenNodes(nodes).some((node) => /^0[01]_目次\.md$/.test(node.name));
     if (!tocExists) {
       issues.push({
         severity: "warning",
@@ -22,6 +22,10 @@ export class DiagnosticsProvider {
         targetPath: nodes[0]?.path ?? "",
         fixType: "toc"
       });
+    }
+
+    function flattenNodes(nodes: AimdNode[]): AimdNode[] {
+      return nodes.flatMap((node) => [node, ...flattenNodes(node.children)]);
     }
 
     issues.push(...this.validateOrder(nodes));

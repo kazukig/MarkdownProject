@@ -40,7 +40,7 @@ export class ImageAssetService {
 }
 
 function nextSequence(existingAssetPaths: string[], documentStem: string): number {
-  const matcher = new RegExp(`${escapeRegExp(documentStem)}_fig(\\d{2})_`, "i");
+  const matcher = new RegExp(`${escapeRegExp(documentStem)}_fig(\\d+)_`, "i");
   const maxSequence = existingAssetPaths.reduce((currentMax, path) => {
     const match = path.match(matcher);
     return match ? Math.max(currentMax, Number(match[1])) : currentMax;

@@ -6,7 +6,8 @@ export interface MetadataView {
 
 export class MetadataGuardService {
   isProtectedPath(targetPath: string): boolean {
-    return targetPath.replace(/\\/g, "/").includes("/.aimd-meta/") || targetPath.endsWith("/.aimd-meta");
+    const normalizedPath = targetPath.replace(/\\/g, "/");
+    return normalizedPath.includes("/.aimd-meta/") || normalizedPath.endsWith("/.aimd-meta");
   }
 
   canWrite(targetPath: string, initiatedBySystem = false): boolean {

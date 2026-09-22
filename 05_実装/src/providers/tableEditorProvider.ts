@@ -51,7 +51,7 @@ function parseTable(table: string): ParsedTable | undefined {
   const rows = table
     .split(/\r?\n/)
     .filter((line) => line.trim().length > 0)
-    .map((line) => line.split("|").slice(1, -1).map((cell) => cell.trim()));
+    .map((line) => parseRow(line));
 
   if (rows.length < 2) {
     return undefined;
@@ -76,4 +76,26 @@ function stringifyTable(table: ParsedTable): string {
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
+}
+
+function parseRow(line: string): string[] {
+  const trimmed = line.trim();
+  const content = trimmed.replace(/^\|/, "").replace(/\|$/, "");
+  const cells: string[] = [];
+  let current = "";
+
+  for (let index = 0; index < content.length; index += 1) {
+    const character = content[index];
+    const previous = index > 0 ? content[index - 1] : "";
+    if (character === "|" && previous !== "\\") {
+      cells.push(current.trim().replace(/\\\|/g, "|"));
+      current = "";
+      continue;
+    }
+
+    current += character;
+  }
+
+  cells.push(current.trim().replace(/\\\|/g, "|"));
+  return cells;
 }

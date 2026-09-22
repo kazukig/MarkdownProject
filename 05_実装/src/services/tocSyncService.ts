@@ -9,7 +9,7 @@ export class TocSyncService {
   }
 
   generateToc(rootPath: string, nodes: AimdNode[], hasIntroduction: boolean, existingContent = ""): TocDocument {
-    const tocPath = `${rootPath}/${this.resolveTocFileName(hasIntroduction)}`;
+    const tocPath = joinPath(rootPath, this.resolveTocFileName(hasIntroduction));
     const generatedBlock = [
       GENERATED_START,
       ...flattenNodes(nodes).map((node) => `${indent(node.depth)}- [${displayName(node.name)}](${node.path})`),
@@ -51,4 +51,9 @@ function mergeGeneratedBlock(existingContent: string, generatedBlock: string): s
   }
 
   return `${existingContent.trimEnd()}\n\n${generatedBlock}`;
+}
+
+function joinPath(rootPath: string, name: string): string {
+  const normalizedRoot = rootPath.replace(/\\/g, "/").replace(/\/+$/, "");
+  return normalizedRoot.length > 0 ? `${normalizedRoot}/${name}` : name;
 }
