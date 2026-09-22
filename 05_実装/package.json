@@ -1,0 +1,26 @@
+{
+  "name": "aimd-studio",
+  "displayName": "AIMD Studio",
+  "description": "AIMD Studio VS Code extension scaffold",
+  "version": "0.0.1",
+  "publisher": "kazukig",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc --project ./tsconfig.json",
+    "watch": "tsc --project ./tsconfig.json --watch",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

@@ -17,7 +17,7 @@ const AIMD_FEATURES = [
   "conversionWizardService"
 ];
 
-export function activate(workspaceFolders: WorkspaceFolderEntry[]): ActivationResult {
+export function activate(workspaceFolders: WorkspaceFolderEntry[] = []): ActivationResult {
   const modeManager = new ModeManager();
   const scanner = new WorkspaceScanner(modeManager);
   const workspaces = scanner.scan(workspaceFolders);
@@ -36,5 +36,4 @@ export function activate(workspaceFolders: WorkspaceFolderEntry[]): ActivationRe
   };
 }
 
-export function deactivate(): void {
-}
+export const deactivate = (): void => {};
