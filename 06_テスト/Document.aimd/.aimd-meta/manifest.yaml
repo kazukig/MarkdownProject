@@ -58,4 +58,4 @@ assets:
     ownerNodeId: chapter-overview
 rulesRef:
   - ".aimd-meta/AI_RULES.md"
-  - ".aimd-meta/AI_CONTEXT.md"
+contextRef: ".aimd-meta/AI_CONTEXT.md"
