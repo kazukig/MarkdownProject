@@ -38,10 +38,6 @@ export class AimdExplorerProvider {
       }
     ];
   }
-
-  private toNode(entry: FileEntry): AimdNode {
-    return this.collectNodes(entry)[0]!;
-  }
 }
 
 function detectNodeType(name: string): AimdNodeType {

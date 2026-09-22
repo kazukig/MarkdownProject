@@ -14,8 +14,22 @@ export class ModeManager {
   }
 
   isAimdPath(targetPath: string, workspaces: WorkspaceMode[]): boolean {
-    return workspaces.some(
-      (workspace) => workspace.mode === "aimd" && targetPath.startsWith(workspace.rootPath)
-    );
+    const normalizedTarget = normalizePath(targetPath);
+    return workspaces.some((workspace) => {
+      if (workspace.mode !== "aimd") {
+        return false;
+      }
+
+      const normalizedRoot = trimTrailingSlash(normalizePath(workspace.rootPath));
+      return normalizedTarget === normalizedRoot || normalizedTarget.startsWith(`${normalizedRoot}/`);
+    });
   }
+}
+
+function normalizePath(path: string): string {
+  return path.replace(/\\/g, "/");
+}
+
+function trimTrailingSlash(path: string): string {
+  return path.replace(/\/+$/, "");
 }

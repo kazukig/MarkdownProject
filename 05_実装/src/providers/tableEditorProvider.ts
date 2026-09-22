@@ -62,6 +62,11 @@ function parseTable(table: string): ParsedTable | undefined {
     return undefined;
   }
 
+  const expectedColumns = header.length;
+  if (delimiter.length !== expectedColumns || body.some((row) => row.length !== expectedColumns)) {
+    return undefined;
+  }
+
   return { header, delimiter, body };
 }
 

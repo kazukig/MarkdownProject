@@ -58,7 +58,7 @@ function baseName(path: string): string {
 function directoryName(path: string): string {
   const normalized = path.replace(/\\/g, "/");
   const index = normalized.lastIndexOf("/");
-  return index >= 0 ? normalized.slice(0, index) : normalized;
+  return index >= 0 ? normalized.slice(0, index) : "";
 }
 
 function extensionName(path: string): string {

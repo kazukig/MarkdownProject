@@ -29,7 +29,7 @@ export class DiagnosticsProvider {
   }
 
   private validateOrder(nodes: AimdNode[]): ValidationIssue[] {
-    return nodes.flatMap((node, index) => {
+    const currentLevelIssues: ValidationIssue[] = nodes.flatMap((node, index) => {
       if (node.order === Number.MAX_SAFE_INTEGER) {
         return [];
       }
@@ -48,5 +48,7 @@ export class DiagnosticsProvider {
 
       return [];
     });
+
+    return [...currentLevelIssues, ...nodes.flatMap((node) => this.validateOrder(node.children))];
   }
 }
