@@ -11,10 +11,11 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "scripts": {
+    "vscode:prepublish": "npm run compile",
     "compile": "tsc --project ./tsconfig.json",
     "watch": "tsc --project ./tsconfig.json --watch",
     "typecheck": "tsc --project ./tsconfig.json --noEmit"

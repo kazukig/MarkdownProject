@@ -8,8 +8,13 @@
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}/05_実装"
       ],
+      "sourceMaps": true,
       "outFiles": [
         "${workspaceFolder}/05_実装/dist/**/*.js"
+      ],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/05_実装/dist/**/*.js",
+        "!**/node_modules/**"
       ]
     }
   ]
