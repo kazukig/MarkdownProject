@@ -1,6 +1,7 @@
 # aimd-meta-version: 1
 version: "1.0"
-rootDocument: "01_目次.md"
+# 前書きあり構成のため、入口ページと目次ページを分けて定義する。
+rootDocument: "00_初めに.md"
 toc: "01_目次.md"
 nodes:
   - id: intro
