@@ -36,5 +36,4 @@ export function activate(workspaceFolders: WorkspaceFolderEntry[] = []): Activat
   };
 }
 
-export function deactivate(): void {
-}
+export const deactivate = (): void => {};
