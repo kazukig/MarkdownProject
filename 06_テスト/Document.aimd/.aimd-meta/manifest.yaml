@@ -1,6 +1,6 @@
 # aimd-meta-version: 1
 version: "1.0"
-rootDocument: "00_初めに.md"
+rootDocument: "01_目次.md"
 toc: "01_目次.md"
 nodes:
   - id: intro
