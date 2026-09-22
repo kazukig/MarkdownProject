@@ -14,6 +14,25 @@
     "onStartupFinished"
   ],
   "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "aimdStudio",
+          "title": "AIMD Studio",
+          "icon": "resources/aimd-studio.svg"
+        }
+      ]
+    },
+    "views": {
+      "aimdStudio": [
+        {
+          "id": "aimdExplorer",
+          "name": "AIMD Explorer"
+        }
+      ]
+    }
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc --project ./tsconfig.json",
