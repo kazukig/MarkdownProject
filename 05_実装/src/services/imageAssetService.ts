@@ -76,8 +76,14 @@ function trimTrailingSlash(path: string): string {
 }
 
 function relativePath(fromDir: string, targetPath: string): string {
-  const fromParts = trimTrailingSlash(fromDir).split("/").filter(Boolean);
-  const targetParts = trimTrailingSlash(targetPath).split("/").filter(Boolean);
+  const normalizedFrom = normalizePath(fromDir);
+  const normalizedTarget = normalizePath(targetPath);
+  if (pathRoot(normalizedFrom) !== pathRoot(normalizedTarget)) {
+    return normalizedTarget;
+  }
+
+  const fromParts = trimTrailingSlash(withoutRoot(normalizedFrom)).split("/").filter(Boolean);
+  const targetParts = trimTrailingSlash(withoutRoot(normalizedTarget)).split("/").filter(Boolean);
   while (fromParts.length > 0 && targetParts.length > 0 && fromParts[0] === targetParts[0]) {
     fromParts.shift();
     targetParts.shift();
@@ -85,6 +91,28 @@ function relativePath(fromDir: string, targetPath: string): string {
 
   const up = fromParts.map(() => "..");
   return [...up, ...targetParts].join("/") || ".";
+}
+
+function normalizePath(path: string): string {
+  return path.replace(/\\/g, "/");
+}
+
+function pathRoot(path: string): string {
+  const driveMatch = path.match(/^[A-Za-z]:/);
+  if (driveMatch) {
+    return driveMatch[0].toLowerCase();
+  }
+
+  return path.startsWith("/") ? "/" : "";
+}
+
+function withoutRoot(path: string): string {
+  const driveMatch = path.match(/^[A-Za-z]:/);
+  if (driveMatch) {
+    return path.slice(driveMatch[0].length);
+  }
+
+  return path.startsWith("/") ? path.slice(1) : path;
 }
 
 function escapeRegExp(text: string): string {

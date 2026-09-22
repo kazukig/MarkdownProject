@@ -38,10 +38,12 @@ function displayName(name: string): string {
 
 function mergeGeneratedBlock(existingContent: string, generatedBlock: string): string {
   if (existingContent.includes(GENERATED_START) && existingContent.includes(GENERATED_END)) {
-    return existingContent.replace(
-      new RegExp(`${escapeRegExp(GENERATED_START)}[\\s\\S]*${escapeRegExp(GENERATED_END)}`),
-      generatedBlock
-    );
+    const startIndex = existingContent.indexOf(GENERATED_START);
+    const endIndex = existingContent.indexOf(GENERATED_END, startIndex);
+    if (startIndex >= 0 && endIndex >= 0) {
+      const afterEnd = endIndex + GENERATED_END.length;
+      return `${existingContent.slice(0, startIndex)}${generatedBlock}${existingContent.slice(afterEnd)}`;
+    }
   }
 
   if (existingContent.trim().length === 0) {
@@ -49,8 +51,4 @@ function mergeGeneratedBlock(existingContent: string, generatedBlock: string): s
   }
 
   return `${existingContent.trimEnd()}\n\n${generatedBlock}`;
-}
-
-function escapeRegExp(text: string): string {
-  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }

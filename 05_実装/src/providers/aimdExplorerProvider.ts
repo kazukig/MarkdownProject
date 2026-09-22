@@ -6,8 +6,7 @@ const DISPLAYABLE_SUFFIXES = [".aimd-chapter", ".aimd-section", ".aimd-subsectio
 export class AimdExplorerProvider {
   buildTree(entries: FileEntry[]): AimdNode[] {
     return entries
-      .filter((entry) => this.isDisplayable(entry.name))
-      .map((entry) => this.toNode(entry))
+      .flatMap((entry) => this.collectNodes(entry))
       .sort(compareNodes);
   }
 
@@ -19,20 +18,29 @@ export class AimdExplorerProvider {
     return DISPLAYABLE_NAMES.has(name) || DISPLAYABLE_SUFFIXES.some((suffix) => name.endsWith(suffix));
   }
 
-  private toNode(entry: FileEntry): AimdNode {
+  private collectNodes(entry: FileEntry): AimdNode[] {
     const children = (entry.children ?? [])
-      .filter((child) => this.isDisplayable(child.name))
-      .map((child) => this.toNode(child))
+      .flatMap((child) => this.collectNodes(child))
       .sort(compareNodes);
 
-    return {
-      path: entry.path,
-      name: entry.name,
-      type: detectNodeType(entry.name),
-      order: extractOrder(entry.name),
-      children,
-      readonly: entry.name === ".aimd-meta"
-    };
+    if (!this.isDisplayable(entry.name)) {
+      return children;
+    }
+
+    return [
+      {
+        path: entry.path,
+        name: entry.name,
+        type: detectNodeType(entry.name),
+        order: extractOrder(entry.name),
+        children,
+        readonly: entry.name === ".aimd-meta"
+      }
+    ];
+  }
+
+  private toNode(entry: FileEntry): AimdNode {
+    return this.collectNodes(entry)[0]!;
   }
 }
 
