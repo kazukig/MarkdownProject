@@ -1,0 +1,61 @@
+# aimd-meta-version: 1
+version: "1.0"
+# 前書きあり構成のため、入口ページと目次ページを分けて定義する。
+rootDocument: "00_初めに.md"
+toc: "01_目次.md"
+nodes:
+  - id: intro
+    path: "00_初めに.md"
+    type: "document"
+  - id: chapter-overview
+    path: "02_概要.aimd-chapter"
+    type: "chapter"
+  - id: purpose
+    path: "02_概要.aimd-chapter/01_目的.md"
+    type: "document"
+  - id: background
+    path: "02_概要.aimd-chapter/02_背景.md"
+    type: "document"
+  - id: chapter-system
+    path: "03_システム.aimd-chapter"
+    type: "chapter"
+  - id: section-hardware
+    path: "03_システム.aimd-chapter/01_ハードウェア.aimd-section"
+    type: "section"
+  - id: subsection-cpu
+    path: "03_システム.aimd-chapter/01_ハードウェア.aimd-section/01_CPU.aimd-subsection"
+    type: "subsection"
+  - id: cpu-detail
+    path: "03_システム.aimd-chapter/01_ハードウェア.aimd-section/01_CPU.aimd-subsection/01_詳細.md"
+    type: "document"
+  - id: subsection-spec
+    path: "03_システム.aimd-chapter/01_ハードウェア.aimd-section/01_CPU.aimd-subsection/02_仕様.aimd-subsection"
+    type: "subsection"
+  - id: cpu-spec
+    path: "03_システム.aimd-chapter/01_ハードウェア.aimd-section/01_CPU.aimd-subsection/02_仕様.aimd-subsection/01_スペック.md"
+    type: "document"
+  - id: memory
+    path: "03_システム.aimd-chapter/01_ハードウェア.aimd-section/02_Memory.md"
+    type: "document"
+  - id: section-software
+    path: "03_システム.aimd-chapter/02_ソフトウェア.aimd-section"
+    type: "section"
+  - id: architecture
+    path: "03_システム.aimd-chapter/02_ソフトウェア.aimd-section/01_アーキテクチャ.md"
+    type: "document"
+  - id: chapter-test
+    path: "04_テスト.aimd-chapter"
+    type: "chapter"
+  - id: test-policy
+    path: "04_テスト.aimd-chapter/01_テスト方針.md"
+    type: "document"
+assets:
+  - id: common-architecture
+    path: "99_Image/common_architecture.png"
+    ownerNodeId: chapter-system
+  - id: intro-image
+    path: "02_概要.aimd-chapter/99_Image/intro.png"
+    ownerNodeId: chapter-overview
+rulesRef:
+  - ".aimd-meta/AI_RULES.md"
+contextRef: ".aimd-meta/AI_CONTEXT.md"
