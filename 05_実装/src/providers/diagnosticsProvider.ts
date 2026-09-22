@@ -1,0 +1,62 @@
+import { AimdNode, ValidationIssue } from "../models";
+
+export class DiagnosticsProvider {
+  validate(nodes: AimdNode[]): ValidationIssue[] {
+    const issues: ValidationIssue[] = [];
+    const metadataNodes = nodes.filter((node) => node.type === "metadata");
+
+    if (metadataNodes.length > 1) {
+      issues.push({
+        severity: "warning",
+        message: ".aimd-meta は 1 つに統一してください。",
+        targetPath: metadataNodes[1].path,
+        fixType: "restore-metadata"
+      });
+    }
+
+    const tocExists = flattenNodes(nodes).some((node) => /^0[01]_目次\.md$/.test(node.name));
+    if (!tocExists) {
+      issues.push({
+        severity: "warning",
+        message: "目次ファイルが見つかりません。",
+        targetPath: nodes[0]?.path ?? "",
+        fixType: "toc"
+      });
+    }
+
+    issues.push(...this.validateOrder(nodes));
+    return issues;
+  }
+
+  private validateOrder(nodes: AimdNode[]): ValidationIssue[] {
+    const currentLevelIssues: ValidationIssue[] = nodes.flatMap((node, index) => {
+      if (node.order === Number.MAX_SAFE_INTEGER || isOrderExempt(node.name)) {
+        return [];
+      }
+
+      const expected = index + 1;
+      if (node.order !== expected) {
+        return [
+          {
+            severity: "info",
+            message: `接頭辞順を確認してください: ${node.name}`,
+            targetPath: node.path,
+            fixType: "reorder"
+          }
+        ];
+      }
+
+      return [];
+    });
+
+    return [...currentLevelIssues, ...nodes.flatMap((node) => this.validateOrder(node.children))];
+  }
+}
+
+function flattenNodes(nodes: AimdNode[]): AimdNode[] {
+  return nodes.flatMap((node) => [node, ...flattenNodes(node.children)]);
+}
+
+function isOrderExempt(name: string): boolean {
+  return /^0[01]_目次\.md$/.test(name) || /^00_初めに\.md$/.test(name);
+}
