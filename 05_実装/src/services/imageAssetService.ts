@@ -98,6 +98,11 @@ function normalizePath(path: string): string {
 }
 
 function pathRoot(path: string): string {
+  const uncMatch = path.match(/^\/\/[^/]+\/[^/]+/);
+  if (uncMatch) {
+    return uncMatch[0].toLowerCase();
+  }
+
   const driveMatch = path.match(/^[A-Za-z]:/);
   if (driveMatch) {
     return driveMatch[0].toLowerCase();
@@ -107,6 +112,11 @@ function pathRoot(path: string): string {
 }
 
 function withoutRoot(path: string): string {
+  const uncMatch = path.match(/^\/\/[^/]+\/[^/]+/);
+  if (uncMatch) {
+    return path.slice(uncMatch[0].length);
+  }
+
   const driveMatch = path.match(/^[A-Za-z]:/);
   if (driveMatch) {
     return path.slice(driveMatch[0].length);

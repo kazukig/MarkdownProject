@@ -24,22 +24,18 @@ export class DiagnosticsProvider {
       });
     }
 
-    function flattenNodes(nodes: AimdNode[]): AimdNode[] {
-      return nodes.flatMap((node) => [node, ...flattenNodes(node.children)]);
-    }
-
     issues.push(...this.validateOrder(nodes));
     return issues;
   }
 
   private validateOrder(nodes: AimdNode[]): ValidationIssue[] {
     const currentLevelIssues: ValidationIssue[] = nodes.flatMap((node, index) => {
-      if (node.order === Number.MAX_SAFE_INTEGER) {
+      if (node.order === Number.MAX_SAFE_INTEGER || isOrderExempt(node.name)) {
         return [];
       }
 
-      const expected = index;
-      if (node.order !== expected && node.order !== expected + 1) {
+      const expected = index + 1;
+      if (node.order !== expected) {
         return [
           {
             severity: "info",
@@ -55,4 +51,12 @@ export class DiagnosticsProvider {
 
     return [...currentLevelIssues, ...nodes.flatMap((node) => this.validateOrder(node.children))];
   }
+}
+
+function flattenNodes(nodes: AimdNode[]): AimdNode[] {
+  return nodes.flatMap((node) => [node, ...flattenNodes(node.children)]);
+}
+
+function isOrderExempt(name: string): boolean {
+  return /^0[01]_目次\.md$/.test(name) || /^00_初めに\.md$/.test(name);
 }

@@ -86,8 +86,7 @@ function parseRow(line: string): string[] {
 
   for (let index = 0; index < content.length; index += 1) {
     const character = content[index];
-    const previous = index > 0 ? content[index - 1] : "";
-    if (character === "|" && previous !== "\\") {
+    if (character === "|" && !isEscapedPipe(content, index)) {
       cells.push(current.trim().replace(/\\\|/g, "|"));
       current = "";
       continue;
@@ -98,4 +97,13 @@ function parseRow(line: string): string[] {
 
   cells.push(current.trim().replace(/\\\|/g, "|"));
   return cells;
+}
+
+function isEscapedPipe(content: string, pipeIndex: number): boolean {
+  let backslashCount = 0;
+  for (let index = pipeIndex - 1; index >= 0 && content[index] === "\\"; index -= 1) {
+    backslashCount += 1;
+  }
+
+  return backslashCount % 2 === 1;
 }
