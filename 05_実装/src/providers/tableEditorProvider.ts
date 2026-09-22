@@ -71,7 +71,9 @@ function parseTable(table: string): ParsedTable | undefined {
 }
 
 function stringifyTable(table: ParsedTable): string {
-  return [table.header, table.delimiter, ...table.body].map((row) => `| ${row.join(" | ")} |`).join("\n");
+  return [table.header, table.delimiter, ...table.body]
+    .map((row) => `| ${row.map((cell) => escapeCell(cell)).join(" | ")} |`)
+    .join("\n");
 }
 
 function clamp(value: number, min: number, max: number): number {
@@ -106,4 +108,8 @@ function isEscapedPipe(content: string, pipeIndex: number): boolean {
   }
 
   return backslashCount % 2 === 1;
+}
+
+function escapeCell(cell: string): string {
+  return cell.replace(/\|/g, "\\|");
 }

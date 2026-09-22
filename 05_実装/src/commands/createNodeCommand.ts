@@ -18,12 +18,18 @@ function segmentFor(nodeName: string, nodeType: CreateNodeRequest["nodeType"]): 
       return "99_Image";
     case "metadata":
       return ".aimd-meta";
-    default:
+    case "folder":
       return nodeName;
   }
+
+  return assertNever(nodeType);
 }
 
 function joinPath(parentPath: string, segment: string): string {
   const normalizedParent = parentPath.replace(/\\/g, "/").replace(/\/+$/, "");
   return normalizedParent.length > 0 ? `${normalizedParent}/${segment}` : segment;
+}
+
+function assertNever(value: never): never {
+  throw new Error(`Unsupported node type: ${value}`);
 }

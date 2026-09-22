@@ -21,6 +21,10 @@ export class ModeManager {
       }
 
       const normalizedRoot = trimTrailingSlash(normalizePath(workspace.rootPath));
+      if (normalizedRoot === "/") {
+        return normalizedTarget.startsWith("/");
+      }
+
       return normalizedTarget === normalizedRoot || normalizedTarget.startsWith(`${normalizedRoot}/`);
     });
   }
